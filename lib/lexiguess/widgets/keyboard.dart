@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lexi_guess/lexiguess/lexiguess.dart';
+import 'package:lexi_guess/lexiguess/models/letter_model.dart';
 
 const _querty = [
   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -12,11 +14,13 @@ class Keyboard extends StatelessWidget {
     required this.onKeyTapped,
     required this.onDeleteTapped,
     required this.onEnterTapped,
+    required this.letters,
   });
 
   final void Function(String) onKeyTapped;
   final VoidCallback onDeleteTapped;
   final VoidCallback onEnterTapped;
+  final Set<Letter> letters;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +38,19 @@ class Keyboard extends StatelessWidget {
                         } else if (letter == 'GUESS') {
                           return _KeyboardButton.enter(onTap: onEnterTapped);
                         }
+
+                        final letterKey = letters.firstWhere(
+                          (element) => element.value == letter,
+                          orElse: () => Letter.empty(),
+                        );
+
                         return _KeyboardButton(
                           onTap: () => onKeyTapped(letter),
                           letter: letter,
-                          onTap: onKeyTapped,
+                          backgroundColor:
+                              letterKey != Letter.empty()
+                                  ? letterKey.backgroundColor
+                                  : Colors.grey,
                         );
                       }).toList(),
                 ),

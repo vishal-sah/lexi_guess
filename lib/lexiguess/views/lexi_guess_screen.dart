@@ -33,6 +33,8 @@ class _MyWidgetState extends State<LexiGuessScreen> {
     fiveLetterWords[Random().nextInt(fiveLetterWords.length)].toUpperCase(),
   );
 
+  final Set<Letter> _keyboardLetters = {};
+
   void _onKeyTapped(String key) {
     if (_gameStatus == GameStatus.playing) {
       setState(() => _currWord?.addLetter(key));
@@ -162,6 +164,7 @@ class _MyWidgetState extends State<LexiGuessScreen> {
             onKeyTapped: _onKeyTapped,
             onDeleteTapped: _onDeleteTapped,
             onEnterTapped: _onEnterTapped,
+            letters: _keyboardLetters,
           ),
         ],
       ),
