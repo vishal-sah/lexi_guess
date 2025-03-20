@@ -53,7 +53,7 @@ class _LexiGuessScreenState extends State<LexiGuessScreen> {
     }
   }
 
-  void _onEnterTapped() {
+  Future<void> _onEnterTapped() async {
     if (_gameStatus == GameStatus.playing &&
         _currWord != null &&
         !_currWord!.letters.contains(Letter.empty())) {
@@ -84,10 +84,17 @@ class _LexiGuessScreenState extends State<LexiGuessScreen> {
           orElse: () => Letter.empty(),
         );
 
-        if(letter.status != LetterStatus.correct) {
-          _keyboardLetters.removeWhere((element) => element.value == currWordLetter.value);
+        if (letter.status != LetterStatus.correct) {
+          _keyboardLetters.removeWhere(
+            (element) => element.value == currWordLetter.value,
+          );
           _keyboardLetters.add(_currWord!.letters[i]);
         }
+
+        await Future.delayed(
+          const Duration(milliseconds: 150),
+          () => _flipCardKeys[_currWordIndex][i].currentState?.toggleCard(),
+        );
       }
 
       _checkWinOrLoss();
@@ -152,6 +159,14 @@ class _LexiGuessScreenState extends State<LexiGuessScreen> {
       _solution = Word.fromString(
         fiveLetterWords[Random().nextInt(fiveLetterWords.length)].toUpperCase(),
       );
+      _flipCardKeys
+        ..clear()
+        ..addAll(
+          List.generate(
+            6,
+            (_) => List.generate(5, (_) => GlobalKey<FlipCardState>()),
+          ),
+        );
       _keyboardLetters.clear();
     });
   }
