@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lexi_guess/lexiguess/data/word_list.dart';
 import 'package:lexi_guess/lexiguess/models/letter_model.dart';
@@ -13,15 +14,20 @@ class LexiGuessScreen extends StatefulWidget {
   const LexiGuessScreen({super.key});
 
   @override
-  State<LexiGuessScreen> createState() => _MyWidgetState();
+  State<LexiGuessScreen> createState() => _LexiGuessScreenState();
 }
 
-class _MyWidgetState extends State<LexiGuessScreen> {
+class _LexiGuessScreenState extends State<LexiGuessScreen> {
   GameStatus _gameStatus = GameStatus.playing;
 
   final List<Word> _board = List.generate(
     6,
     (_) => Word(letters: List.generate(5, (_) => Letter.empty())),
+  );
+
+  final List<List<GlobalKey<FlipCardState>>> _flipCardKeys = List.generate(
+    6,
+    (_) => List.generate(5, (_) => GlobalKey<FlipCardState>()),
   );
 
   int _currWordIndex = 0;
@@ -72,6 +78,16 @@ class _MyWidgetState extends State<LexiGuessScreen> {
             );
           }
         });
+
+        final letter = _keyboardLetters.firstWhere(
+          (element) => element.value == currWordLetter.value,
+          orElse: () => Letter.empty(),
+        );
+
+        if(letter.status != LetterStatus.correct) {
+          _keyboardLetters.removeWhere((element) => element.value == currWordLetter.value);
+          _keyboardLetters.add(_currWord!.letters[i]);
+        }
       }
 
       _checkWinOrLoss();
@@ -136,6 +152,7 @@ class _MyWidgetState extends State<LexiGuessScreen> {
       _solution = Word.fromString(
         fiveLetterWords[Random().nextInt(fiveLetterWords.length)].toUpperCase(),
       );
+      _keyboardLetters.clear();
     });
   }
 
@@ -158,7 +175,7 @@ class _MyWidgetState extends State<LexiGuessScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Board(board: _board),
+          Board(board: _board, flipCardKeys: _flipCardKeys),
           const SizedBox(height: 80),
           Keyboard(
             onKeyTapped: _onKeyTapped,
