@@ -173,6 +173,9 @@ class _LexiGuessScreenState extends State<LexiGuessScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -190,14 +193,32 @@ class _LexiGuessScreenState extends State<LexiGuessScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Board(board: _board, flipCardKeys: _flipCardKeys),
-          const SizedBox(height: 80),
-          Keyboard(
-            onKeyTapped: _onKeyTapped,
-            onDeleteTapped: _onDeleteTapped,
-            onEnterTapped: _onEnterTapped,
-            letters: _keyboardLetters,
+          SizedBox(
+            height: screenHeight * 0.15,
+            child: Center(
+              child: Text(
+                'Guess the word!',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
+          SizedBox(
+            height: screenHeight * 0.45,
+            child: Board(board: _board, flipCardKeys: _flipCardKeys),
+          ),
+          SizedBox(
+            height: screenHeight * 0.25,
+            child: Keyboard(
+              onKeyTapped: _onKeyTapped,
+              onDeleteTapped: _onDeleteTapped,
+              onEnterTapped: _onEnterTapped,
+              letters: _keyboardLetters,
+            ),
+          ),
+          SizedBox(height: screenHeight * 0.02),
         ],
       ),
     );

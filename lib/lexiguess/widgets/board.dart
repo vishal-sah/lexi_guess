@@ -1,8 +1,6 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lexi_guess/lexiguess/lexiguess.dart';
-import 'package:lexi_guess/lexiguess/models/word_model.dart';
-import 'package:lexi_guess/lexiguess/widgets/board_tile.dart';
 
 class Board extends StatelessWidget {
   const Board({super.key, required this.board, required this.flipCardKeys});

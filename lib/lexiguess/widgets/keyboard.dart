@@ -62,7 +62,6 @@ class Keyboard extends StatelessWidget {
 
 class _KeyboardButton extends StatelessWidget {
   const _KeyboardButton({
-    super.key,
     this.height = 48,
     this.width = 30,
     required this.onTap,
