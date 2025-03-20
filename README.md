@@ -27,7 +27,7 @@ To get started with Lexi Guess, follow these steps:
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/lexi_guess.git
+    git clone https://github.com/vishal-sah/lexi_guess.git
     ```
 2. **Navigate to the project directory**:
     ```bash
